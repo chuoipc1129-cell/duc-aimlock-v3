@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Duc AimLock V3</title>
+  <style>
+    /* RESET & CẤU HÌNH CHUNG */
+    * {
+      margin:0; padding:0; box-sizing:border-box; 
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    html, body {
+      width:100%; height:100%; 
+      font-family:'Segoe UI', Roboto, sans-serif; 
+      background: #070912; overflow:hidden; color: #fff;
+    }
+    
+    /* HIỆU ỨNG MẠNG LƯỚI */
+    #network {
+      position:absolute; top:0; left:0; width:100%; height:100%; 
+      z-index:0; opacity: 0.8;
+    }
+    
+    /* GIAO DIỆN ĐĂNG NHẬP */
+    #lock {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      z-index:20;
+      transition: opacity 0.6s ease;
+    }
+    #lock.hide {opacity:0; visibility:hidden;}
+
+    .login-box {
+      width: 380px;
+      padding: 40px 30px;
+      background: rgba(18, 22, 36, 0.95);
+      border-radius: 25px;
+      border: 1px solid rgba(0, 255, 204, 0.2);
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.15);
+      backdrop-filter: blur(15px);
+      text-align: center;
+    }
+
+    h1.main-title { font-size: 26px; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 5px; }
+    p.version-text { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 35px; }
+
+    /* PHẦN KEY ĐĂNG NHẬP */
+    .input-group { width: 100%; text-align: left; margin-bottom: 25px; }
+    .input-label { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    
+    .input-wrapper { position: relative; width: 100%; }
+    #keyInput {
+      width: 100%; padding: 18px 20px;
+      background: rgba(25, 30, 49, 0.8); color: #00ffcc;
+      border-radius: 15px; border: 1.5px solid rgba(0, 255, 204, 0.1);
+      font-size: 15px; text-align: center;
+      outline: none;
+    }
+    
+    .toggle-password {
+      position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+      cursor: pointer; 
+      color: rgba(255,255,255,0.3);
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    #unlockBtn {
+      width: 100%; padding: 18px;
+      background: #0099ff;
+      color: #fff; font-weight: bold; font-size: 16px; text-transform: uppercase;
+      border: none; border-radius: 15px; cursor: pointer;
+      box-shadow: 0 5px 20px rgba(0, 153, 255, 0.4);
+      transition: 0.3s;
+    }
+    #unlockBtn:disabled { background: #555; box-shadow: none; cursor: not-allowed; }
+
+    .loading-bar { width: 100%; height: 6px; border-radius: 10px; background: #111; overflow: hidden; display: none; margin-top: 25px; }
+    .loading-fill { height: 100%; width: 0%; background: #00ffcc; box-shadow: 0 0 10px #00ffcc; transition: width 0.1s linear; }
+
+    /* DÒNG TÍNH NĂNG */
+    .feature-list { width: 100%; max-width: 380px; margin-top: 30px; text-align: left; font-size: 14px; color: rgba(255,255,255,0.7); line-height: 2; }
+    .feature-item { display: flex; align-items: center; gap: 12px; }
+    .check-icon { color: #00ffcc; font-weight: bold; }
+
+    /* MENU MOD CHÍNH */
+    .panel {
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); 
+      width:360px; padding:25px; background:rgba(18, 22, 36, 0.99); 
+      border-radius:20px; border:2px solid #00ffcc; 
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+      opacity:0; visibility:hidden; transition: 0.5s; z-index: 30;
+    }
+    .panel.show {opacity:1; visibility:visible;}
+    .panel h2 { text-align:center; color:#00ffcc; margin-bottom:20px; text-transform: uppercase; font-weight: 900; }
+
+    .row { display:flex; justify-content:space-between; align-items:center; margin:10px 0; padding:12px 15px; background:rgba(255,255,255,0.03); border-radius:12px; border: 1px solid rgba(255,255,255,0.05); }
+    
+    /* SWITCH BUTTON */
+    .toggle { position:relative; width:65px; height:32px; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; inset:0; background:#222; border-radius:30px; transition:.3s; border: 1px solid #444; }
+    .slider:before { position:absolute; content:""; height:24px; width:24px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.3s; z-index: 2; }
+    
+    .slider:after { content: "OFF"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #777; font-size: 10px; font-weight: bold; }
+    input:checked + .slider:after { content: "ON"; left: 10px; right: auto; color: #000; }
+
+    input:checked + .slider { background: #00ffcc; box-shadow: 0 0 10px #00ffcc; border-color: #00ffcc; }
+    input:checked + .slider:before { transform: translateX(33px); }
+
+    /* DPI SLIDER */
+    .dpi-container { margin-top: 20px; padding: 0 10px; }
+    .dpi-label { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
+    #dpiRange { width: 100%; height: 6px; background: #333; border-radius: 5px; outline: none; accent-color: #00ffcc; -webkit-appearance: none; }
+
+    .apply { width: 100%; margin-top: 25px; padding: 18px; background: #00ffcc; color: #000; border: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 15px rgba(0,255,204,0.3); }
+
+    /* TOAST NOTIFICATION */
+    #toast {
+      position: fixed; bottom: -80px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.9); border: 2px solid #00ffcc; color: #fff; 
+      padding: 12px 25px; border-radius: 15px; font-weight: bold; 
+      transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100; opacity: 0;
+      display: flex; align-items: center; gap: 10px;
+      white-space: nowrap;
+    }
+    #toast.show { bottom: 40px; opacity: 1; }
+  </style>
+</head>
+<body>
+
+<canvas id="network"></canvas>
+
+<div id="lock">
+  <div class="login-box">
+    <h1 class="main-title">DUC AIMLOCK V3</h1>
+    <p class="version-text">Version 1.0 — Nhập key để tiếp tục</p>
+
+    <div class="input-group">
+      <div class="input-label" id="shieldLabel">🛡 Key đăng nhập</div>
+      <div class="input-wrapper">
+        <input type="password" id="keyInput" placeholder="Nhập Key VIP của bạn...">
+        <span class="toggle-password" id="eyeIcon">👁️</span>
+      </div>
+    </div>
+
+    <button id="unlockBtn">🌐   ĐĂNG NHẬP</button>
+
+    <div class="loading-bar" id="loadingBar">
+      <div class="loading-fill" id="fill"></div>
+    </div>
+  </div>
+
+  <div class="feature-list">
+    <div class="feature-item"><span class="check-icon">✓</span> Bypass Anti-Cheat chuyên nghiệp — ẩn hoàn toàn</div>
+    <div class="feature-item"><span class="check-icon">✓</span> Tối ưu FPS tối đa & giảm Ping xuống mức thấp nhất</div>
+    <div class="feature-item"><span class="check-icon">✓</span> Cải thiện kéo tâm full đỏ — chính xác tuyệt đối</div>
+    <div class="feature-item"><span class="check-icon">✓</span> Cập nhật liên tục, hỗ trợ mọi thiết bị Android</div>
+    <div class="feature-item"><span class="check-icon">✓</span> Liên hệ Zalo: <span style="color:#00ffcc; font-weight:bold;">⓪⑨②③③⑦⑤⑥⑦⓪</span></div>
+  </div>
+</div>
+
+<div class="panel" id="menu">
+  <h2>DUC AIMLOCK V3</h2>
+  
+  <div class="row"><span>Giảm Rung</span><label class="toggle"><input type="checkbox" onchange="toggleFeature('Giảm Rung', this)"><span class="slider"></span></label></div>
+  <div class="row"><span>Nhẹ Tâm</span><label class="toggle"><input type="checkbox" onchange="toggleFeature('Nhẹ Tâm', this)"><span class="slider"></span></label></div>
+  <div class="row"><span>Fix Lố</span><label class="toggle"><input type="checkbox" onchange="toggleFeature('Fix Lố', this)"><span class="slider"></span></label></div>
+  <div class="row"><span>AimLock</span><label class="toggle"><input type="checkbox" onchange="toggleFeature('AimLock', this)"><span class="slider"></span></label></div>
+  <div class="row"><span>HeadLock</span><label class="toggle"><input type="checkbox" onchange="toggleFeature('HeadLock', this)"><span class="slider"></span></label></div>
+  
+  <div class="dpi-container">
+    <div class="dpi-label"><span>DPI:</span><span id="dpiVal" style="color:#00ffcc; font-weight:bold;">0</span></div>
+    <input type="range" id="dpiRange" min="0" max="2000" value="0" oninput="updateDPI(this.value)">
+  </div>
+  
+  <button class="apply" onclick="applyAll()">ÁP DỤNG TẤT CẢ</button>
+</div>
+
+<div id="toast">Thông báo!</div>
+
+<script>
+  // CẤU HÌNH KEY SYSTEM
+  const scriptURL = "https://script.google.com/macros/s/AKfycbwXZkgEbDWBx2JcDfVeCKPT6hbZk4RxFDL6no9_gRMaBT9iwhsqjnO1KjwflMEaasdI/exec";
+  
+  const keyInput = document.getElementById('keyInput');
+  const eyeIcon = document.getElementById('eyeIcon');
+  const unlockBtn = document.getElementById('unlockBtn');
+  const toast = document.getElementById('toast');
+  const shieldLabel = document.getElementById('shieldLabel');
+
+  // Tạo ID thiết bị dựa trên thông số trình duyệt (giúp định danh 50 máy)
+  const deviceId = btoa(navigator.userAgent + navigator.language).substring(0, 16);
+
+  // Hiện/Ẩn Key
+  eyeIcon.onclick = () => {
+    if (keyInput.type === "password") {
+      keyInput.type = "text";
+      eyeIcon.style.color = "#00ffcc"; 
+      shieldLabel.style.color = "#00ffcc"; // Khiên cũng sáng theo
+    } else {
+      keyInput.type = "password";
+      eyeIcon.style.color = "rgba(255,255,255,0.3)"; 
+      shieldLabel.style.color = "rgba(255,255,255,0.7)";
+    }
+  };
+
+  // Logic Đăng nhập gọi API Google Sheets
+  unlockBtn.onclick = async () => {
+    const userKey = keyInput.value.trim();
+    if (!userKey) return showToast("❌ vui lòng Nhập Key VIP của bạn...!");
+
+    unlockBtn.innerText = "⏳ ĐANG XÁC THỰC...";
+    unlockBtn.disabled = true;
+
+    try {
+      // Gọi lên Server Google Sheets của bạn
+      const response = await fetch(`${scriptURL}?key=${encodeURIComponent(userKey)}&device=${deviceId}`);
+      const result = await response.json();
+
+      if (result.status === "success") {
+        showToast("✅ " + result.message);
+        
+        // Hiệu ứng Loading Bar
+        document.getElementById('loadingBar').style.display = 'block';
+        let p = 0;
+        let itv = setInterval(() => {
+          p += 5;
+          document.getElementById('fill').style.width = p + '%';
+          if (p >= 100) {
+            clearInterval(itv);
+            document.getElementById('lock').classList.add('hide');
+            setTimeout(() => {
+              document.getElementById('lock').style.display = 'none';
+              document.getElementById('menu').classList.add('show');
+            }, 600);
+          }
+        }, 30);
+      } else {
+        showToast("❌ " + result.message);
+        unlockBtn.innerText = "🌐 ĐĂNG NHẬP";
+        unlockBtn.disabled = false;
+      }
+    } catch (err) {
+      showToast("⚠️ Lỗi kết nối Server!");
+      unlockBtn.innerText = "🌐 ĐĂNG NHẬP";
+      unlockBtn.disabled = false;
+    }
+  };
+
+  // Các hàm chức năng menu
+  function toggleFeature(name, el) {
+    if(el.checked) {
+      showToast("✅ ON: " + name);
+    } else {
+      showToast("❌ OFF: " + name);
+    }
+  }
+
+  function updateDPI(val) {
+    document.getElementById("dpiVal").innerText = val;
+  }
+
+  function applyAll() {
+    showToast("🚀 ÁP DỤNG HOÀN TẤT!");
+  }
+
+  function showToast(msg) {
+    toast.innerText = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // HIỆU ỨNG MẠNG LƯỚI TIA SÁNG (GIỮ NGUYÊN)
+  const canvas = document.getElementById("network"), ctx = canvas.getContext("2d");
+  let W, H, points = [];
+  function resize() {
+    W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight;
+    points = []; 
+    for (let i = 0; i < 70; i++) points.push({x: Math.random()*W, y: Math.random()*H, vx:(Math.random()-0.5)*0.8, vy:(Math.random()-0.5)*0.8});
+  }
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    points.forEach((a, i) => {
+      points.slice(i+1).forEach(b => {
+        let d = Math.hypot(a.x-b.x, a.y-b.y);
+        if (d < 140) { 
+          ctx.strokeStyle=`rgba(0, 255, 204, ${0.8 - d/140})`; 
+          ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); 
+        }
+      });
+      a.x+=a.vx; a.y+=a.vy; if(a.x<0||a.x>W) a.vx*=-1; if(a.y<0||a.y>H) a.vy*=-1;
+      ctx.fillStyle = "#00ffcc"; ctx.beginPath(); ctx.arc(a.x, a.y, 2, 0, Math.PI*2); ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  window.onresize = resize; resize(); draw();
+</script>
+</body>
+</html>

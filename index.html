@@ -5,106 +5,242 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>DUC AIMLOCK V3 - HYBRID EDITION</title>
   <style>
+    /* RESET & BASE - GIỮ NGUYÊN PHONG CÁCH LỲ CỦA ẢNH BRO GỬI */
     * { margin:0; padding:0; box-sizing:border-box; -webkit-user-select: none; -webkit-tap-highlight-color: transparent !important; }
-    html, body { width:100%; height:100%; font-family:'Segoe UI', Roboto, sans-serif; background: #010103; overflow:hidden; color: #fff; transition: background 0.3s ease; }
+    html, body { width:100%; height:100%; font-family:'Segoe UI', Roboto, sans-serif; background: #010103; overflow:hidden; color: #fff; }
     
-    body.light-mode { background: #f0f0f0; color: #000; }
-    body.light-mode .login-box, body.light-mode .panel, body.light-mode #adminPage { background: rgba(255, 255, 255, 0.95); border-color: #ddd; color: #000; }
-
+     /* HIỆU ỨNG MẠNG LƯỚI NỀN (Xanh Cyan lỳ) */
     #network { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; opacity: 0.6; }
-
+    
+        /* 1. ĐỊNH NGHĨA HIỆU ỨNG (Tên là rainbow-animation) */
     @keyframes rainbow-animation {
-      0%   { border-color: #ff0000; box-shadow: 0 0 25px rgba(255,0,0,0.9); }
-      25%  { border-color: #ffff00; box-shadow: 0 0 25px rgba(255,255,0,0.9); }
-      50%  { border-color: #00ff00; box-shadow: 0 0 25px rgba(0,255,0,0.9); }
-      75%  { border-color: #00ffff; box-shadow: 0 0 25px rgba(0,255,255,0.9); }
-      100% { border-color: #ff0000; box-shadow: 0 0 25px rgba(255,0,0,0.9); }
+      0% { 
+        border-color: #ff0000; 
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.7); 
+      }
+      33% { 
+        border-color: #00ff00; 
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.7); 
+      }
+      66% { 
+        border-color: #0000ff; 
+        box-shadow: 0 0 15px rgba(0, 0, 255, 0.7); 
+      }
+      100% { 
+        border-color: #ff0000; 
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.7); 
+      }
+    }
+    
+    /* GIAO DIỆN ĐĂNG NHẬP (Giữ nguyên 100% như ảnh 2 bro gửi) */
+    #lock { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:10; transition: 0.6s ease; }
+    #lock.hide { opacity:0; visibility:hidden; }
+    
+    .login-box { 
+      width: 320px; padding: 30px; 
+      background: #09090c; border-radius: 20px; 
+      border: 1px solid rgba(0, 242, 254, 0.2); 
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.1); 
+      backdrop-filter: blur(10px); 
+      text-align: center;
     }
 
-    /* LOGIN */
-    #lock { position:absolute; inset:0; z-index:30; display:flex; flex-direction:column; justify-content:center; align-items:center; transition:0.6s ease; }
-    #lock.hide { opacity:0; pointer-events:none; }
-
-    .login-box { width:320px; padding:30px; background:#09090c; border-radius:20px; border:1px solid rgba(0,242,254,0.3); box-shadow:0 0 40px rgba(0,242,254,0.2); text-align:center; }
-
-    .input-group-login { width:100%; text-align:left; margin-bottom:15px; }
-    .input-label-login { font-size:11px; color:rgba(255,255,255,0.6); margin-bottom:8px; }
-    .input-wrapper-login { position:relative; width:100%; }
-    #keyInputLogin { width:100%; padding:12px 15px; background:#101014; color:#fff; border-radius:10px; border:1px solid #1a1a20; font-size:12px; text-align:center; outline:none; }
-    .eye-icon-login { position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer; color:rgba(255,255,255,0.3); font-size:14px; }
-    .forgot-key-text { display:block; text-align:center; margin-top:12px; font-size:11px; color:rgba(255,255,255,0.4); cursor:pointer; }
-    .forgot-key-text:hover { color:#00f2fe; }
-
-    .features-list-login { margin-top:25px; text-align:left; width:320px; font-size:11px; color:rgba(255,255,255,0.7); line-height:1.8; }
-    .feat-item-login { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-
-    /* MENU + RAINBOW */
+    /* 2. MENU CHÍNH - GỌI ĐÚNG TÊN rainbow-animation */
     .panel {
-      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-      width:320px; max-height:85vh; padding:20px; background:#09090c; border-radius:20px;
-      border:2px solid #ff0000; animation:rainbow-animation 3s linear infinite;
-      box-shadow:0 0 35px rgba(0,242,254,0.2); z-index:25;
-      opacity:0; visibility:hidden; transition:0.5s; display:flex; flex-direction:column;
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%); 
+      width: 340px; 
+      padding: 25px; 
+      background: #09090c; 
+      border-radius: 25px;
+      border: 2px solid #ff0000;
+      animation: rainbow-animation 4s linear infinite; /* ĐÃ SỬA TÊN */
+      z-index: 20;
+    }
+
+    /* 3. THANH CHỨC NĂNG - GỌI ĐÚNG TÊN rainbow-animation */
+    .row { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      background: #101014; 
+      border-radius: 15px; 
+      padding: 18px; 
+      margin-bottom: 15px; 
+      border: 2px solid #ff0000; 
+      animation: rainbow-animation 4s linear infinite; /* ĐÃ SỬA TÊN */
+    }
+
+    /* NÚT ON-OFF GIỐNG ẢNH */
+    .toggle { position:relative; width:55px; height:36px; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider { 
+      position:absolute; inset:0; background:#333; border-radius:20px; transition:.3s; cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    /* Chữ OFF */
+    .slider:after {
+      content: "OFF"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      font-size: 9px; font-weight: 900; color: #666; transition: 0.3s;
+    }
+    .slider:before { 
+      position:absolute; content:""; height:18px; width:18px; left:4px; bottom:3px; 
+      background:#fff; border-radius:50%; transition:.3s; z-index: 2;
+    }
+    input:checked + .slider { background: #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); }
+    /* Chữ ON */
+    input:checked + .slider:after { content: "ON"; left: 8px; color: #000; }
+    input:checked + .slider:before { transform: translateX(28px); }
+
+    /* THANH DPI MỚI */
+    .dpi-container { margin-top: 10px; padding: 15px; background: #101014; border-radius: 15px; }
+    .dpi-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 10px; color: #00f2fe; font-weight: bold; }
+    .slider-dpi { 
+      width: 100%; height: 6px; background: #222; border-radius: 10px; 
+      outline: none; -webkit-appearance: none; 
+    }
+    .slider-dpi::-webkit-slider-thumb { 
+      -webkit-appearance: none; width: 10px; height: 10px; 
+      background: #fff; border-radius: 50%; cursor: pointer;
+      box-shadow: 0 0 12px #fff; /* Chấm kéo phát sáng */
+      border: 2px solid #00f2fe;
+    }
+
+    /* THÊM STYLE LOGO TRÒN */
+    .user-logo-main {
+      width: 85px; height: 85px; border-radius: 50%;
+      border: 2px solid #00f2fe; margin-bottom: 15px;
+      object-fit: cover; box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+    }
+
+    .main-title-login { font-size: 20px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+    .version-text-login { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 25px; }
+    .input-group-login { width: 100%; text-align: left; margin-bottom: 15px; }
+    .input-label-login { font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+    .input-wrapper-login { position: relative; width: 100%; }
+    #keyInputLogin { 
+      width: 100%; padding: 12px 15px; 
+      background: #101014; color: #fff; 
+      border-radius: 10px; border: 1px solid #1a1a20; 
+      font-size: 12px; text-align: center; outline: none; 
+    }
+    .eye-icon-login { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: rgba(255,255,255,0.3); font-size: 14px; }
+    
+    /* STYLE QUÊN KEY */
+    .forgot-key-text {
+      display: block; width: 100%; text-align: center; margin-top: 12px;
+      font-size: 11px; color: rgba(255,255,255,0.4); cursor: pointer;
+      transition: 0.3s;
+    }
+    .forgot-key-text:hover { color: #00f2fe; text-shadow: 0 0 5px #00f2fe; }
+
+    #unlockBtnLogin { 
+      width: 100%; padding: 12px; 
+      background: #007bff; color: #fff; 
+      font-weight: bold; font-size: 13px; text-transform: uppercase; 
+      border: none; border-radius: 10px; cursor: pointer; 
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); 
+    }
+    #unlockBtnLogin:disabled { background: #555; box-shadow: none; cursor: not-allowed; }
+
+    /* TRANG ADMIN PAGE MỚI */
+    #adminPage {
+      position: fixed; inset: 0; background: #09090c;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 100; opacity: 0; visibility: hidden; transition: 0.5s ease-in-out;
+    }
+    #adminPage.show { opacity: 1; visibility: visible; }
+    .admin-card-title { font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 2px; }
+    .admin-card-sub { font-size: 12px; color: #00f2fe; letter-spacing: 2px; margin-bottom: 25px; }
+    .admin-banner { width: 280px; border-radius: 10px; margin-top: 10px; border: 1px solid #1a1a20; }
+    .admin-back { margin-top: 40px; color: rgba(255,255,255,0.2); font-size: 11px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+    .features-list-login { margin-top: 25px; text-align: left; width: 320px; font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.8; }
+    .feat-item-login { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .check-icon-login { color: #00f2fe; }
+
+    /* MENU CHÍNH */
+    .panel {
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); 
+      width:320px; max-height: 85vh; padding:20px;
+      background: #09090c; border-radius:20px;
+      border:1px solid rgba(0, 242, 254, 0.3); box-shadow: 0 0 30px rgba(0, 242, 254, 0.1);
+      opacity:0; visibility:hidden; transition: 0.5s; z-index: 20;
+      display: flex; flex-direction: column;
     }
     .panel.show { opacity:1; visibility:visible; }
+    
+    .menu-header { text-align:center; padding-bottom: 15px; border-bottom: 1px solid #1a1a20; margin-bottom: 15px; }
+    .menu-header h2 { color:#00f2fe; font-size: 18px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; }
 
+    /* MENU BODY (SCROLLABLE) */
+    .menu-body { overflow-y: auto; padding-right: 5px; flex-grow: 1; }
+    .menu-body::-webkit-scrollbar { width: 3px; }
+    .menu-body::-webkit-scrollbar-thumb { background: #1a1a20; border-radius: 2px; }
+
+    /* GAME TABS */
+    .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+    .tab-btn { flex: 1; padding: 10px; background: #101014; border: 1px solid #1a1a20; color: rgba(255,255,255,0.6); border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer; text-align: center; }
+    .tab-btn.active { background: #00f2fe; color: #000; border-color: #00f2fe; box-shadow: 0 0 10px rgba(0, 242, 254, 0.3); }
+
+    /* FUNCTION ROWS */
     .row { 
-      display:flex; justify-content:space-between; align-items:center;
-      background:#101014; border-radius:12px; padding:18px; margin-bottom:15px;
-      border:2px solid #ff0000; animation:rainbow-animation 3s linear infinite;
+      display:flex; justify-content:space-between; align-items:center; 
+      background:#101014; border-radius:12px; 
+      padding:18px; 
+      margin-bottom:15px; 
+      border: 1px solid #1a1a20; 
     }
+    .row-title { font-size:12px; font-weight:600; color: rgba(255,255,255,0.9); }
 
+    /* SWITCH BUTTON */
     .toggle { position:relative; width:40px; height:20px; }
     .toggle input { opacity:0; width:0; height:0; }
-    .slider { position:absolute; inset:0; background:#1a1a20; border-radius:20px; transition:.3s; cursor:pointer; }
+    .slider { position:absolute; inset:0; background:#1a1a20; border-radius:20px; transition:.3s; cursor: pointer; }
     .slider:before { position:absolute; content:""; height:14px; width:14px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.3s; }
-    input:checked + .slider { background:#00f2fe; box-shadow:0 0 10px rgba(0,242,254,0.6); }
-    input:checked + .slider:before { transform:translateX(20px); }
+    input:checked + .slider { background:#00f2fe; box-shadow: 0 0 8px rgba(0, 242, 254, 0.5); }
+    input:checked + .slider:before { transform: translateX(20px); }
 
-    .menu-header { text-align:center; padding-bottom:15px; border-bottom:1px solid #1a1a20; margin-bottom:15px; }
-    .menu-header h2 { color:#00f2fe; font-size:18px; text-transform:uppercase; font-weight:900; letter-spacing:1px; }
+    .slider-custom { width: 100%; height: 4px; background: #1a1a20; border-radius: 5px; outline: none; accent-color: #00f2fe; -webkit-appearance: none; cursor: pointer; }
+    .slider-custom::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: #fff; border-radius: 50%; box-shadow: 0 0 5px rgba(0,242,254,0.5); }
 
-    .menu-body { overflow-y:auto; padding-right:5px; flex-grow:1; }
-    .menu-body::-webkit-scrollbar { width:3px; }
-    .menu-body::-webkit-scrollbar-thumb { background:#1a1a20; border-radius:2px; }
-
-    .tabs { display:flex; gap:8px; margin-bottom:15px; }
-    .tab-btn { flex:1; padding:10px; background:#101014; border:1px solid #1a1a20; color:rgba(255,255,255,0.6); border-radius:8px; font-weight:bold; font-size:11px; cursor:pointer; text-align:center; }
-    .tab-btn.active { background:#00f2fe; color:#000; border-color:#00f2fe; box-shadow:0 0 10px rgba(0,242,254,0.3); }
-
-    .row-title { font-size:12px; font-weight:600; color:rgba(255,255,255,0.9); }
-
-    .new-features-section { width:340px; max-width:90%; margin-top:15px; display:flex; flex-direction:column; gap:8px; z-index:5; }
-    .new-feature-row { background:#09090c; padding:10px; border-radius:12px; border:1px solid #222; display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:11px; color:#aaa; }
-
-    .user-logo-main { width:85px; height:85px; border-radius:50%; border:2px solid #00f2fe; margin-bottom:15px; object-fit:cover; box-shadow:0 0 15px rgba(0,242,254,0.3); }
-
+    /* INFO PANEL */
     .info-panel {
-      position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.9);
-      width:280px; padding:20px; background:#09090c; border-radius:15px;
-      border:2px solid #00f2fe; box-shadow:0 0 30px rgba(0,242,254,0.4);
-      text-align:center; z-index:100; opacity:0; visibility:hidden; transition:0.3s;
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+      width: 280px; padding: 20px;
+      background: #09090c; border-radius: 15px;
+      border: 2px solid #00f2fe; box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+      text-align: center; z-index: 100;
+      opacity: 0; visibility: hidden; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .info-panel.show { opacity:1; visibility:visible; transform:translate(-50%,-50%) scale(1); }
+    .info-panel.show { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+    .info-icon { font-size: 30px; color: #00f2fe; margin-bottom: 10px; border: 1.5px solid #00f2fe; width: 50px; height: 50px; line-height: 50px; border-radius: 50%; display: inline-block; }
+    .info-title { font-size: 15px; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; color: #fff; }
+    .info-desc { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.5; margin-bottom: 10px; }
+    .info-status { font-size: 10px; font-weight: bold; text-transform: uppercase; }
+    .status-active { color: #00ff66; }
+    .status-inactive { color: #ff3333; }
+    .info-bar { width: 100%; height: 3px; background: #00f2fe; position: absolute; bottom: 0; left: 0; border-radius: 0 0 15px 15px; }
 
-    .menu-footer { text-align:center; padding-top:15px; border-top:1px solid #1a1a20; margin-top:15px; font-size:9px; color:rgba(255,255,255,0.3); }
+    /* MENU FOOTER */
+    .menu-footer { text-align:center; padding-top: 15px; border-top: 1px solid #1a1a20; margin-top: 15px; font-size: 9px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; line-height: 1.4; }
   </style>
 </head>
 <body>
 
 <canvas id="network"></canvas>
 
-<!-- ADMIN PAGE -->
-<div id="adminPage" style="position:fixed;inset:0;background:#09090c;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:50;">
+<div id="adminPage">
   <img src="https://sf-static.upanhlaylink.com/img/image_20260402364f4382ec5db2bd7b6027ee0c1d34fa.jpg" class="user-logo-main" alt="Admin">
-  <div style="font-size:24px;font-weight:900;color:#fff;margin:10px 0 5px;">Administrator</div>
-  <div style="color:#00f2fe;">DUC AIMLOCK</div>
-  <div style="margin-top:15px;font-size:10px;">Admin Hỗ trợ</div>
-  <img src="https://sf-static.upanhlaylink.com/img/image_20260404cbd3916cd6f485534fcf88dc19f24f4a.jpg" style="width:280px;border-radius:10px;margin-top:20px;border:1px solid #1a1a20;" alt="Banner">
-  <div onclick="toggleAdmin(false)" style="margin-top:40px;color:rgba(255,255,255,0.3);font-size:11px;cursor:pointer;">Quay lại trang Đăng nhập</div>
+  <div class="admin-card-title">Administrator</div>
+  <div class="admin-card-sub">DUC AIMLOCK</div>
+  <div class="admin-card-sub" style="margin-top: 15px; font-size: 10px;">Admin Hỗ trợ</div>
+  <img src="https://sf-static.upanhlaylink.com/img/image_20260404cbd3916cd6f485534fcf88dc19f24f4a.jpg" class="admin-banner" alt="Admin Info Banner">
+  <div class="admin-back" onclick="toggleAdmin(false)">Quay lại trang Đăng nhập</div>
 </div>
 
-<!-- LOGIN -->
 <div id="lock">
   <div class="login-box">
     <img src="https://sf-static.upanhlaylink.com/img/image_20260402364f4382ec5db2bd7b6027ee0c1d34fa.jpg" class="user-logo-main" alt="Duc Logo">
@@ -118,16 +254,9 @@
       </div>
       <span class="forgot-key-text" onclick="toggleAdmin(true)">Quên key?</span>
     </div>
-    <button id="unlockBtnLogin" style="margin-top:10px;width:100%;padding:12px;background:#007bff;color:#fff;font-weight:bold;border:none;border-radius:10px;cursor:pointer;">🌐 ĐĂNG NHẬP</button>
+    <button id="unlockBtnLogin" style="margin-top: 10px;">🌐   ĐĂNG NHẬP</button>
   </div>
   
-    <div class="new-features-section">
-    <!-- Phần new-features giữ nguyên như code cũ của bạn -->
-    <div class="new-feature-row">
-      <div class="widget-srv-box"><div class="status-dot-on" id="srvDot"></div> Server: <span id="srvTxt" style="color:#0f6">Online</span></div>
-      <div class="widget-srv-box"><span style="color:#00f2fe">⚡</span> API Quota: <span id="apiVal">81%</span></div>
-    </div>
-
   <div class="features-list-login">
     <div class="feat-item-login"><span class="check-icon-login">✓</span> Bypass Anti-Cheat chuyên nghiệp — ẩn hoàn toàn</div>
     <div class="feat-item-login"><span class="check-icon-login">✓</span> Tối ưu FPS tối đa & giảm Ping xuống mức thấp nhất</div>
@@ -135,80 +264,114 @@
     <div class="feat-item-login"><span class="check-icon-login">✓</span> Cập nhật liên tục, hỗ trợ mọi thiết bị Android</div>
     <div class="feat-item-login"><span class="check-icon-login">✓</span> Mua key days, week, month, year — Liên hệ Zalo: ⓪⑨②③③⑦⑤⑥⑦⓪</div>
   </div>
-  
-<!-- MENU -->
+</div>
+
 <div class="panel" id="menu">
-  <!-- Toàn bộ nội dung menu của bạn giữ nguyên 100% -->
   <div class="menu-header">
     <img src="https://sf-static.upanhlaylink.com/img/image_20260402364f4382ec5db2bd7b6027ee0c1d34fa.jpg" class="user-logo-main" alt="Duc Logo">
     <h2>DUC AIMLOCK V3</h2>
   </div>
+  
   <div class="menu-body">
     <div class="tabs">
       <div class="tab-btn active" onclick="switchTab('normal', this)">Free Fire Thường</div>
       <div class="tab-btn" onclick="switchTab('max', this)">Free Fire Max</div>
     </div>
-    <!-- Các row chức năng giữ nguyên -->
-    <div class="row"><div class="row-title">🔒 AIMLOCK</div><label class="toggle"><input type="checkbox" onchange="toggleFunc('Aimlock', 'Tự động khóa mục tiêu vào tâm', '🔒', this)"><span class="slider"></span></label></div>
-    <div class="row"><div class="row-title">✔️ EXACTLY++</div><label class="toggle"><input type="checkbox" onchange="toggleFunc('Exactly++', 'Hỗ trợ ngắm bắn chính xác tuyệt đối', '✔️', this)"><span class="slider"></span></label></div>
-    <div class="row"><div class="row-title">⚡ OPTIMIZE</div><label class="toggle"><input type="checkbox" onchange="toggleFunc('Optimize', 'Tối ưu hiệu suất thiết bị', '⚡', this)"><span class="slider"></span></label></div>
-    <div class="row"><div class="row-title">➕ SENSITIVITY PRO</div><label class="toggle"><input type="checkbox" onchange="toggleFunc('Sensitivity Pro', 'Cải thiện độ nhạy màn hình', '➕', this)"><span class="slider"></span></label></div>
-    <div class="row"><div class="row-title">⚙️ LEGET PRO</div><label class="toggle"><input type="checkbox" onchange="toggleFunc('Leget Pro', 'Giảm giật lag và độ trễ', '⚙️', this)"><span class="slider"></span></label></div>
-    <div class="row"><div class="row-title">🚶 AIMLOCK HEAD</div><label class="toggle"><input type="checkbox" onchange="toggleFunc('AimLock Head', 'Tự động khóa mục tiêu vào đầu', '🚶', this)"><span class="slider"></span></label></div>
-    <div class="row"><div class="row-title">🚀 ÁP DỤNG TẤT CẢ</div><label class="toggle"><input type="checkbox" onchange="toggleFunc('Áp Dụng', 'Áp Dụng Hoàn Tất', '🚀', this)"><span class="slider"></span></label></div>
-  </div>
+    
+    <div class="row">
+      <div class="row-title">🔒 AIMLOCK</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Aimlock', 'Tự động khóa mục tiêu vào tâm', '🔒', this)"><span class="slider"></span></label>
+    </div>
+
+    <div class="row">
+      <div class="row-title">✔️ EXACTLY++</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Exactly++', 'Hỗ trợ ngắm bắn chính xác tuyệt đối', '✔️', this)"><span class="slider"></span></label>
+    </div>
+
+    <div class="row">
+      <div class="row-title">⚡ OPTIMIZE</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Optimize', 'Tối ưu hiệu suất thiết bị', '⚡', this)"><span class="slider"></span></label>
+    </div>
+
+    <div class="row">
+      <div class="row-title">➕ SENSITIVITY PRO</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Sensitivity Pro', 'Cải thiện độ nhạy màn hình', '➕', this)"><span class="slider"></span></label>
+    </div>
+
+    <div class="row">
+      <div class="row-title">⚙️ LEGET PRO</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Leget Pro', 'Giảm giật lag và độ trễ', '⚙️', this)"><span class="slider"></span></label>
+    </div>
+
+    <div class="row">
+      <div class="row-title">🚶 AIMLOCK HEAD</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('AimLock Head', 'Tự động khóa mục tiêu vào đầu', '🚶', this)"><span class="slider"></span></label>
+    </div>
+    
+    <div class="row">
+    <div class="row-title">🚀 ÁP DỤNG TẤT CẢ</div>
+    <label class="toggle"><input type="checkbox" onchange="toggleFunc('Áp Dụng', 'Áp Dụng Hoàn Tất — Chức Năng Đã Được Áp Dụng', '🚀', this)"><span class="slider"></span></label>
+</div>
     
     <div class="dpi-row">
-      <div class="dpi-label"><span>🎯 DPI: </span><span id="dpiVal">0%</span></div>
-      <input type="range" class="slider-custom" min="0%" max="2000%" value="0%" oninput="document.getElementById('dpiVal').innerText = this.value">
+      <div class="dpi-label"><span>🎯 DPI: </span><span id="dpiVal">0</span></div>
+      <input type="range" class="slider-custom" min="0" max="2000" value="0" oninput="document.getElementById('dpiVal').innerText = this.value">
   </div>
-    
     <div class="fps-row">
-      <div class="fps-label"><span>📲 FPS: </span><span id="dpiVal">30%</span></div>
-      <input type="range" class="slider-custom" min="30%" max="240%" value="30%" oninput="document.getElementById('dpiVal').innerText = this.value">
+      <div class="fps-label"><span>📲 FPS: </span><span id="dpiVal">30</span></div>
+      <input type="range" class="slider-custom" min="30" max="240" value="30" oninput="document.getElementById('dpiVal').innerText = this.value">
   </div>
-    
     <div class="nhạy-row">
-      <div class="nhạy-label"><span>🧪 Tăng Nhạy: </span><span id="dpiVal">0%</span></div>
-      <input type="range" class="slider-custom" min="0%" max="100%" value="0%" oninput="document.getElementById('dpiVal').innerText = this.value">
+      <div class="nhạy-label"><span>🧪 Tăng Nhạy: </span><span id="dpiVal">0</span></div>
+      <input type="range" class="slider-custom" min="0" max="100" value="0" oninput="document.getElementById('dpiVal').innerText = this.value">
   </div>
     
-    <div class="menu-footer">۞ 2025 DUC AIMLOCK V3 Menu<br>all rights reserved</div>
+  <div class="menu-footer">
+    ۞ 2025 DUC AIMLOCK V3 Menu<br>
+    all rights reserved
 </div>
+    
+    
     
 <div class="info-panel" id="infoPanel">
   <div class="info-icon" id="infoIcon">✓</div>
   <div class="info-title" id="infoTitle">NAME</div>
   <div class="info-desc" id="infoDesc">DESCRIPTION</div>
   <div class="info-status" id="infoStatus">Đã bật ACTIVATED</div>
+  <div class="info-bar"></div>
 </div>
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyBsZU-o5vQAwQBlZthBJU4eoubfibmDCpovPxyxOKyHU17szN9Q0yklDHOowHeZ0u/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyBsZU-o5vQAwQBlZthBJU4eoubfibmDCpovPxyxOKyHU17szN9Q0yklDHOowHHeZ0u/exec";
   
-  // Network + Stats + Ping (giữ nguyên)
-  // ... (phần getDynamicStatsOutside, animatePingOutside, network canvas giữ nguyên như code bạn gửi)
-
   const keyInput = document.getElementById('keyInputLogin');
   const eyeIcon = document.getElementById('eyeIcon');
   const unlockBtn = document.getElementById('unlockBtnLogin');
 
+  function toggleAdmin(show) {
+    const adminPage = document.getElementById('adminPage');
+    if(show) adminPage.classList.add('show');
+    else adminPage.classList.remove('show');
+  }
+
   eyeIcon.onclick = () => {
-    keyInput.type = keyInput.type === "password" ? "text" : "password";
-    eyeIcon.style.color = keyInput.type === "text" ? "#00f2fe" : "rgba(255,255,255,0.3)";
+    if (keyInput.type === "password") {
+      keyInput.type = "text";
+      eyeIcon.style.color = "#00f2fe";
+    } else {
+      keyInput.type = "password";
+      eyeIcon.style.color = "rgba(255,255,255,0.3)";
+    }
   };
 
   unlockBtn.onclick = async () => {
     const userKey = keyInput.value.trim();
     if (!userKey) return showInfoPanel("Cảnh báo", "Key Không Tồn Tại!", "⚠️", false);
-
-    unlockBtn.innerText = "⏳ XÁC THỰC...";
+    unlockBtn.innerText = "⏳ ĐANG XÁC THỰC KEY...";
     unlockBtn.disabled = true;
-
     try {
-      const response = await fetch(`\( {scriptURL}?key= \){encodeURIComponent(userKey)}`);
+      const response = await fetch(`${scriptURL}?key=${encodeURIComponent(userKey)}`);
       const result = await response.json();
-
       if (result.status === "success") {
         showInfoPanel("Thành công", result.message, "✓", true);
         setTimeout(() => {
@@ -219,38 +382,58 @@
           }, 600);
         }, 1500);
       } else {
-        showInfoPanel("Lỗi", result.message || "Key không hợp lệ!", "✕", false);
+        showInfoPanel("Lỗi", result.message, "✕", false);
         unlockBtn.innerText = "🌐 ĐĂNG NHẬP";
         unlockBtn.disabled = false;
       }
     } catch (err) {
-      showInfoPanel("Lỗi kết nối", "Không thể kết nối server. Kiểm tra mạng!", "☁️", false);
+      showInfoPanel("Lỗi kết nối", "Không thể Đăng nhập Server!", "☁️", false);
       unlockBtn.innerText = "🌐 ĐĂNG NHẬP";
       unlockBtn.disabled = false;
     }
   };
 
-  // Các hàm còn lại (toggleAdmin, switchTab, toggleFunc, showInfoPanel, network canvas...) giữ nguyên như code bạn gửi
-  // (để ngắn gọn mình không paste lại toàn bộ, nhưng bạn giữ nguyên phần script cũ)
-
-  function toggleAdmin(show) {
-    const adminPage = document.getElementById('adminPage');
-    adminPage.style.display = show ? 'flex' : 'none';
+  function switchTab(gameType, el) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    el.classList.add('active');
+    showInfoPanel("Chuyển chế độ", `Đã chuyển sang ${el.innerText}`, "🔄", true);
   }
 
+  function toggleFunc(name, desc, icon, el) {
+    showInfoPanel(name, desc, icon, el.checked);
+  }
+
+  let infoTimeout;
   function showInfoPanel(title, desc, icon, isActive) {
     const panel = document.getElementById('infoPanel');
     document.getElementById('infoIcon').innerText = icon;
     document.getElementById('infoTitle').innerText = title;
     document.getElementById('infoDesc').innerText = desc;
-    document.getElementById('infoStatus').innerHTML = isActive ? 
-      `Đã bật <span class="status-active">ACTIVATED</span>` : 
-      `Đã tắt <span class="status-inactive">DEACTIVATED</span>`;
+    document.getElementById('infoStatus').innerHTML = isActive ? `Đã bật <span class="status-active">ACTIVATED</span>` : `Đã tắt <span class="status-inactive">DEACTIVATED</span>`;
     panel.classList.add('show');
-    setTimeout(() => panel.classList.remove('show'), 2500);
+    clearTimeout(infoTimeout);
+    infoTimeout = setTimeout(() => panel.classList.remove('show'), 2500);
   }
-
-  // Network canvas (giữ nguyên phần cuối script của bạn)
+  
+  const canvas = document.getElementById("network"), ctx = canvas.getContext("2d");
+  let W, H, points = [];
+  function resize() {
+    W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; points = []; 
+    for (let i = 0; i < 70; i++) points.push({x: Math.random()*W, y: Math.random()*H, vx:(Math.random()-0.5)*0.8, vy:(Math.random()-0.5)*0.8});
+  }
+  function draw() {
+    ctx.clearRect(0,0,W,H); ctx.globalCompositeOperation = "lighter";
+    points.forEach((a, i) => {
+      points.slice(i+1).forEach(b => {
+        let d = Math.hypot(a.x-b.x, a.y-b.y);
+        if (d < 140) { ctx.strokeStyle=`rgba(0, 242, 254, ${0.8 - d/140})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
+      });
+      a.x+=a.vx; a.y+=a.vy; if(a.x<0||a.x>W) a.vx*=-1; if(a.y<0||a.y>H) a.vy*=-1;
+      ctx.fillStyle = "#00f2fe"; ctx.beginPath(); ctx.arc(a.x, a.y, 2, 0, Math.PI*2); ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  window.onresize = resize; resize(); draw();
 </script>
 </body>
 </html>

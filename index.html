@@ -102,7 +102,35 @@
       outline: none; -webkit-appearance: none; 
     }
     .slider-dpi::-webkit-slider-thumb { 
-      -webkit-appearance: none; width: 10px; height: 10px; 
+      -webkit-appearance: none; width: 14px; height: 14px; 
+      background: #fff; border-radius: 50%; cursor: pointer;
+      box-shadow: 0 0 12px #fff; /* Chấm kéo phát sáng */
+      border: 2px solid #00f2fe;
+    }
+    
+    /* THANH Fps MỚI */
+    .fps-container { margin-top: 10px; padding: 15px; background: #101014; border-radius: 15px; }
+    .fps-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 10px; color: #00f2fe; font-weight: bold; }
+    .slider-fps { 
+      width: 100%; height: 6px; background: #222; border-radius: 10px; 
+      outline: none; -webkit-appearance: none; 
+    }
+    .slider-fps::-webkit-slider-thumb { 
+      -webkit-appearance: none; width: 14px; height: 14px; 
+      background: #fff; border-radius: 50%; cursor: pointer;
+      box-shadow: 0 0 12px #fff; /* Chấm kéo phát sáng */
+      border: 2px solid #00f2fe;
+    }
+    
+    /* THANH Tăng Nhạy MỚI */
+    .sensi-container { margin-top: 10px; padding: 15px; background: #101014; border-radius: 15px; }
+    .sensi-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 10px; color: #00f2fe; font-weight: bold; }
+    .slider-sensi { 
+      width: 100%; height: 6px; background: #222; border-radius: 10px; 
+      outline: none; -webkit-appearance: none; 
+    }
+    .slider-sensi::-webkit-slider-thumb { 
+      -webkit-appearance: none; width: 14px; height: 14px; 
       background: #fff; border-radius: 50%; cursor: pointer;
       box-shadow: 0 0 12px #fff; /* Chấm kéo phát sáng */
       border: 2px solid #00f2fe;
@@ -315,15 +343,15 @@
     
     <div class="dpi-row">
       <div class="dpi-label"><span>🎯 DPI: </span><span id="dpiVal">0</span></div>
-      <input type="range" class="slider-custom" min="0" max="2000" value="0" oninput="document.getElementById('dpiVal').innerText = this.value">
+      <input type="range" class="slider-dpi" min="0" max="2000" value="0" oninput="document.getElementById('dpiVal').innerText = this.value">
   </div>
     <div class="fps-row">
-      <div class="fps-label"><span>📲 FPS: </span><span id="dpiVal">30</span></div>
-      <input type="range" class="slider-custom" min="30" max="240" value="30" oninput="document.getElementById('dpiVal').innerText = this.value">
+      <div class="fps-label"><span>📲 FPS: </span><span id="fpsVal">30</span></div>
+      <input type="range" class="slider-fps" min="30" max="240" value="30" oninput="document.getElementById('fpsVal').innerText = this.value">
   </div>
     <div class="nhạy-row">
-      <div class="nhạy-label"><span>🧪 Tăng Nhạy: </span><span id="dpiVal">0</span></div>
-      <input type="range" class="slider-custom" min="0" max="100" value="0" oninput="document.getElementById('dpiVal').innerText = this.value">
+      <div class="nhạy-label"><span>🧪 Tăng Nhạy: </span><span id="sensiVal">0</span></div>
+      <input type="range" class="slider-sensi" min="0" max="100" value="0" oninput="document.getElementById('sensiVal').innerText = this.value">
   </div>
     
   <div class="menu-footer">
@@ -342,7 +370,7 @@
 </div>
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyBsZU-o5vQAwQBlZthBJU4eoubfibmDCpovPxyxOKyHU17szN9Q0yklDHOowHHeZ0u/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxzNr5glnJ7c4iOkOQW7Q8cpRNTnxSsLQZxyPqtIyfEFMqmaPYmogSIHcBr47IBGmGz/exec";
   
   const keyInput = document.getElementById('keyInputLogin');
   const eyeIcon = document.getElementById('eyeIcon');

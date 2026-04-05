@@ -9,29 +9,9 @@
     * { margin:0; padding:0; box-sizing:border-box; -webkit-user-select: none; -webkit-tap-highlight-color: transparent !important; }
     html, body { width:100%; height:100%; font-family:'Segoe UI', Roboto, sans-serif; background: #010103; overflow:hidden; color: #fff; }
     
-     /* HIỆU ỨNG MẠNG LƯỚI NỀN (Xanh Cyan lỳ) */
+    /* HIỆU ỨNG MẠNG LƯỚI NỀN (Xanh Cyan lỳ) */
     #network { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; opacity: 0.6; }
-    
-        /* 1. ĐỊNH NGHĨA HIỆU ỨNG (Tên là rainbow-animation) */
-    @keyframes rainbow-animation {
-      0% { 
-        border-color: #ff0000; 
-        box-shadow: 0 0 15px rgba(255, 0, 0, 0.7); 
-      }
-      33% { 
-        border-color: #00ff00; 
-        box-shadow: 0 0 15px rgba(0, 255, 0, 0.7); 
-      }
-      66% { 
-        border-color: #0000ff; 
-        box-shadow: 0 0 15px rgba(0, 0, 255, 0.7); 
-      }
-      100% { 
-        border-color: #ff0000; 
-        box-shadow: 0 0 15px rgba(255, 0, 0, 0.7); 
-      }
-    }
-    
+
     /* GIAO DIỆN ĐĂNG NHẬP (Giữ nguyên 100% như ảnh 2 bro gửi) */
     #lock { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:10; transition: 0.6s ease; }
     #lock.hide { opacity:0; visibility:hidden; }
@@ -43,97 +23,6 @@
       box-shadow: 0 0 30px rgba(0, 242, 254, 0.1); 
       backdrop-filter: blur(10px); 
       text-align: center;
-    }
-
-    /* 2. MENU CHÍNH - GỌI ĐÚNG TÊN rainbow-animation */
-    .panel {
-      position: absolute; 
-      top: 50%; 
-      left: 50%; 
-      transform: translate(-50%, -50%); 
-      width: 340px; 
-      padding: 25px; 
-      background: #09090c; 
-      border-radius: 25px;
-      border: 2px solid #ff0000;
-      animation: rainbow-animation 4s linear infinite; /* ĐÃ SỬA TÊN */
-      z-index: 20;
-    }
-
-    /* 3. THANH CHỨC NĂNG - GỌI ĐÚNG TÊN rainbow-animation */
-    .row { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      background: #101014; 
-      border-radius: 15px; 
-      padding: 18px; 
-      margin-bottom: 15px; 
-      border: 2px solid #ff0000; 
-      animation: rainbow-animation 4s linear infinite; /* ĐÃ SỬA TÊN */
-    }
-
-    /* NÚT ON-OFF GIỐNG ẢNH */
-    .toggle { position:relative; width:55px; height:36px; }
-    .toggle input { opacity:0; width:0; height:0; }
-    .slider { 
-      position:absolute; inset:0; background:#333; border-radius:20px; transition:.3s; cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    /* Chữ OFF */
-    .slider:after {
-      content: "OFF"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-      font-size: 9px; font-weight: 900; color: #666; transition: 0.3s;
-    }
-    .slider:before { 
-      position:absolute; content:""; height:18px; width:18px; left:4px; bottom:3px; 
-      background:#fff; border-radius:50%; transition:.3s; z-index: 2;
-    }
-    input:checked + .slider { background: #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); }
-    /* Chữ ON */
-    input:checked + .slider:after { content: "ON"; left: 8px; color: #000; }
-    input:checked + .slider:before { transform: translateX(28px); }
-
-    /* THANH DPI MỚI */
-    .dpi-container { margin-top: 10px; padding: 15px; background: #101014; border-radius: 15px; }
-    .dpi-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 10px; color: #00f2fe; font-weight: bold; }
-    .slider-dpi { 
-      width: 100%; height: 6px; background: #222; border-radius: 10px; 
-      outline: none; -webkit-appearance: none; 
-    }
-    .slider-dpi::-webkit-slider-thumb { 
-      -webkit-appearance: none; width: 14px; height: 14px; 
-      background: #fff; border-radius: 50%; cursor: pointer;
-      box-shadow: 0 0 12px #fff; /* Chấm kéo phát sáng */
-      border: 2px solid #00f2fe;
-    }
-    
-    /* THANH Fps MỚI */
-    .fps-container { margin-top: 10px; padding: 15px; background: #101014; border-radius: 15px; }
-    .fps-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 10px; color: #00f2fe; font-weight: bold; }
-    .slider-fps { 
-      width: 100%; height: 6px; background: #222; border-radius: 10px; 
-      outline: none; -webkit-appearance: none; 
-    }
-    .slider-fps::-webkit-slider-thumb { 
-      -webkit-appearance: none; width: 14px; height: 14px; 
-      background: #fff; border-radius: 50%; cursor: pointer;
-      box-shadow: 0 0 12px #fff; /* Chấm kéo phát sáng */
-      border: 2px solid #00f2fe;
-    }
-    
-    /* THANH Tăng Nhạy MỚI */
-    .sensi-container { margin-top: 10px; padding: 15px; background: #101014; border-radius: 15px; }
-    .sensi-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 10px; color: #00f2fe; font-weight: bold; }
-    .slider-sensi { 
-      width: 100%; height: 6px; background: #222; border-radius: 10px; 
-      outline: none; -webkit-appearance: none; 
-    }
-    .slider-sensi::-webkit-slider-thumb { 
-      -webkit-appearance: none; width: 14px; height: 14px; 
-      background: #fff; border-radius: 50%; cursor: pointer;
-      box-shadow: 0 0 12px #fff; /* Chấm kéo phát sáng */
-      border: 2px solid #00f2fe;
     }
 
     /* THÊM STYLE LOGO TRÒN */
@@ -192,7 +81,7 @@
     /* MENU CHÍNH */
     .panel {
       position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); 
-      width:320px; max-height: 85vh; padding:20px;
+      width:400px; max-height: 90vh; padding:20px;
       background: #09090c; border-radius:20px;
       border:1px solid rgba(0, 242, 254, 0.3); box-shadow: 0 0 30px rgba(0, 242, 254, 0.1);
       opacity:0; visibility:hidden; transition: 0.5s; z-index: 20;
@@ -202,6 +91,27 @@
     
     .menu-header { text-align:center; padding-bottom: 15px; border-bottom: 1px solid #1a1a20; margin-bottom: 15px; }
     .menu-header h2 { color:#00f2fe; font-size: 18px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; }
+  
+  /* NÚT ON-OFF GIỐNG ẢNH */
+    .toggle { position:relative; width:70px; height:36px; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider { 
+      position:absolute; inset:0; background:#333; border-radius:20px; transition:.3s; cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    /* Chữ OFF */
+    .slider:after {
+      content: "OFF"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      font-size: 9px; font-weight: 900; color: #666; transition: 0.3s;
+    }
+    .slider:before { 
+      position:absolute; content:""; height:18ppx; width:18px; left:4px; bottom:3px; 
+      background:#fff; border-radius:50%; transition:.3s; z-index: 2;
+    }
+    input:checked + .slider { background: #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); }
+    /* Chữ ON */
+    input:checked + .slider:after { content: "ON"; left: 8px; color: #000; }
+    input:checked + .slider:before { transform: translateX(28px); }
 
     /* MENU BODY (SCROLLABLE) */
     .menu-body { overflow-y: auto; padding-right: 5px; flex-grow: 1; }
@@ -266,7 +176,7 @@
   <div class="admin-card-sub">DUC AIMLOCK</div>
   <div class="admin-card-sub" style="margin-top: 15px; font-size: 10px;">Admin Hỗ trợ</div>
   <img src="https://sf-static.upanhlaylink.com/img/image_20260404cbd3916cd6f485534fcf88dc19f24f4a.jpg" class="admin-banner" alt="Admin Info Banner">
-  <div class="admin-back" onclick="toggleAdmin(false)">Quay lại trang Đăng nhập</div>
+  <div class="admin-back" onclick="toggleAdmin(false)">Quay trang Đăng nhập</div>
 </div>
 
 <div id="lock">
@@ -290,13 +200,13 @@
     <div class="feat-item-login"><span class="check-icon-login">✓</span> Tối ưu FPS tối đa & giảm Ping xuống mức thấp nhất</div>
     <div class="feat-item-login"><span class="check-icon-login">✓</span> Cải thiện kéo tâm full đỏ — chính xác tuyệt đối</div>
     <div class="feat-item-login"><span class="check-icon-login">✓</span> Cập nhật liên tục, hỗ trợ mọi thiết bị Android</div>
-    <div class="feat-item-login"><span class="check-icon-login">✓</span> Mua key days, week, month, year — Liên hệ Zalo: ⓪⑨②③③⑦⑤⑥⑦⓪</div>
+    <div class="feat-item-login"><span class="check-icon-login">✓</span> Mua key days, week, month, year — Liên hệ Zalo: 0923375670</div>
   </div>
 </div>
 
 <div class="panel" id="menu">
   <div class="menu-header">
-    <img src="https://sf-static.upanhlaylink.com/img/image_20260402364f4382ec5db2bd7b6027ee0c1d34fa.jpg" class="user-logo-main" alt="Duc Logo">
+        <img src="https://sf-static.upanhlaylink.com/img/image_20260402364f4382ec5db2bd7b6027ee0c1d34fa.jpg" class="user-logo-main" alt="Duc Logo">
     <h2>DUC AIMLOCK V3</h2>
   </div>
   
@@ -307,60 +217,62 @@
     </div>
     
     <div class="row">
-      <div class="row-title">🔒 AIMLOCK</div>
-      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Aimlock', 'Tự động khóa mục tiêu vào tâm', '🔒', this)"><span class="slider"></span></label>
+      <div class="row-title">🔒 AIMLOCK PRO</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Aimlock Pro', 'Tự động khóa mục tiêu vào tâm', '🔒', this)"><span class="slider"></span></label>
     </div>
-
     <div class="row">
       <div class="row-title">✔️ EXACTLY++</div>
       <label class="toggle"><input type="checkbox" onchange="toggleFunc('Exactly++', 'Hỗ trợ ngắm bắn chính xác tuyệt đối', '✔️', this)"><span class="slider"></span></label>
     </div>
-
     <div class="row">
-      <div class="row-title">⚡ OPTIMIZE</div>
-      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Optimize', 'Tối ưu hiệu suất thiết bị', '⚡', this)"><span class="slider"></span></label>
+      <div class="row-title">⚡ OPTIMIZE GAME</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Optimize Game', 'Tối ưu Game Fix Lag', '⚡', this)"><span class="slider"></span></label>
     </div>
-
     <div class="row">
-      <div class="row-title">➕ SENSITIVITY PRO</div>
-      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Sensitivity Pro', 'Cải thiện độ nhạy màn hình', '➕', this)"><span class="slider"></span></label>
+      <div class="row-title">🤖 FPS 240HZ UNLOCKER (VIP)</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Fps 240Hz Unlocker', 'Kích hoạt 240Hz Tối Ưu', '🤖', this)"><span class="slider"></span></label>
     </div>
-
     <div class="row">
       <div class="row-title">⚙️ LEGET PRO</div>
       <label class="toggle"><input type="checkbox" onchange="toggleFunc('Leget Pro', 'Giảm giật lag và độ trễ', '⚙️', this)"><span class="slider"></span></label>
     </div>
-
     <div class="row">
       <div class="row-title">🚶 AIMLOCK HEAD</div>
-      <label class="toggle"><input type="checkbox" onchange="toggleFunc('AimLock Head', 'Tự động khóa mục tiêu vào đầu', '🚶', this)"><span class="slider"></span></label>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('AimLock Head', 'Tự động khóa vào đầu', '🚶', this)"><span class="slider"></span></label>
     </div>
-    
     <div class="row">
-    <div class="row-title">🚀 ÁP DỤNG TẤT CẢ</div>
-    <label class="toggle"><input type="checkbox" onchange="toggleFunc('Áp Dụng', 'Áp Dụng Hoàn Tất — Chức Năng Đã Được Áp Dụng', '🚀', this)"><span class="slider"></span></label>
-</div>
+      <div class="row-title">🚀 FIX LỐ + FIX RUNG (VIP)</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Fix Lố + Fix Rung', 'Giảm Lố Đầu và Rung Tâm', '🚀', this)"><span class="slider"></span></label>
+    </div>
+    <div class="row">
+      <div class="row-title">➕ SENSIVITY PRO (VIP)</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Sensivity Pro', 'Tăng độ nhạy cảm ứng', '➕', this)"><span class="slider"></span></label>
+    </div>
+    <div class="row">
+      <div class="row-title">💉 TIÊM AIMBOT PRO</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Tiêm AimBot Pro', 'Khóa chặt vùng đầu', '💉', this)"><span class="slider"></span></label>
+    </div>
+    <div class="row">
+      <div class="row-title">🧬 SUPPER CONFIG PRO</div>
+      <label class="toggle"><input type="checkbox" onchange="toggleFunc('Supper ConFig Pro', 'Cấu hình mượt mà tuyệt đối', '🧬', this)"><span class="slider"></span></label>
+    </div>
+
+    <div style="margin: 10px 0; color:#00f2fe; font-size:11px;">🎯 DPI: <span id="dpiVal">0</span></div>
+    <input type="range" min="0" max="2000" value="0" style="width:100%; accent-color:#00f2fe;" oninput="document.getElementById('dpiVal').innerText = this.value">
     
-    <div class="dpi-row">
-      <div class="dpi-label"><span>🎯 DPI: </span><span id="dpiVal">0</span></div>
-      <input type="range" class="slider-dpi" min="0" max="2000" value="0" oninput="document.getElementById('dpiVal').innerText = this.value">
-  </div>
-    <div class="fps-row">
-      <div class="fps-label"><span>📲 FPS: </span><span id="fpsVal">30</span></div>
-      <input type="range" class="slider-fps" min="30" max="240" value="30" oninput="document.getElementById('fpsVal').innerText = this.value">
-  </div>
-    <div class="nhạy-row">
-      <div class="nhạy-label"><span>🧪 Tăng Nhạy: </span><span id="sensiVal">0</span></div>
-      <input type="range" class="slider-sensi" min="0" max="100" value="0" oninput="document.getElementById('sensiVal').innerText = this.value">
-  </div>
-    
+    <div style="margin: 10px 0; color:#00f2fe; font-size:11px;">📲 FPS: <span id="fpsVal">30</span></div>
+    <input type="range" min="30" max="240" value="30" style="width:100%; accent-color:#00f2fe;" oninput="document.getElementById('fpsVal').innerText = this.value">
+
+    <div style="margin: 10px 0; color:#00f2fe; font-size:11px;">🧪 SENSI: <span id="sensiVal">0</span></div>
+    <input type="range" min="0" max="100" value="0" style="width:100%; accent-color:#00f2fe;" oninput="document.getElementById('sensiVal').innerText = this.value">
+  </div>
+
   <div class="menu-footer">
     ۞ 2025 DUC AIMLOCK V3 Menu<br>
     all rights reserved
+  </div>
 </div>
-    
-    
-    
+
 <div class="info-panel" id="infoPanel">
   <div class="info-icon" id="infoIcon">✓</div>
   <div class="info-title" id="infoTitle">NAME</div>
@@ -370,7 +282,7 @@
 </div>
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxzNr5glnJ7c4iOkOQW7Q8cpRNTnxSsLQZxyPqtIyfEFMqmaPYmogSIHcBr47IBGmGz/exec";
+  const scriptURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5QnNaVS1vNXZRQXdRQmxadGhCSlU0ZW91YmZpYm1EQ3BvdlB4eXhPS3lIVTE3c3pOOVEweWtsREhPb3dISGVaMHUvZXhlYw==";
   
   const keyInput = document.getElementById('keyInputLogin');
   const eyeIcon = document.getElementById('eyeIcon');
@@ -410,7 +322,7 @@
           }, 600);
         }, 1500);
       } else {
-        showInfoPanel("Lỗi", result.message, "✕", false);
+        showInfoPanel("Lỗi", result.message,  "✕", false);
         unlockBtn.innerText = "🌐 ĐĂNG NHẬP";
         unlockBtn.disabled = false;
       }
@@ -442,7 +354,7 @@
     clearTimeout(infoTimeout);
     infoTimeout = setTimeout(() => panel.classList.remove('show'), 2500);
   }
-  
+
   const canvas = document.getElementById("network"), ctx = canvas.getContext("2d");
   let W, H, points = [];
   function resize() {
